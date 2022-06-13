@@ -58,6 +58,14 @@ export class Container {
     }
     return JSON.parse(res.body);
   }
+  
+  async inspect(id: string) {
+    const res = await this.client.get(`/containers/${id}/json`, "");
+    if (!res.body || !res.body.length) {
+      return {};
+    }
+    return JSON.parse(res.body);
+  }
 
   async stop(id: string, timeout: number = 10) {
     const res = await this.client.post(
