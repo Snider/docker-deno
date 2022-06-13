@@ -60,7 +60,7 @@ export class Container {
   }
   
   async inspect(id: string) {
-    const res = await this.client.get(`/containers/${id}/json`, "");
+    const res = await this.client.get(`/containers/${id}/json`, []);
     if (!res.body || !res.body.length) {
       return {};
     }
