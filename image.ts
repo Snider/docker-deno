@@ -1,6 +1,7 @@
 import { DockerClient } from "./lib/client/client.ts";
 import {ContainerCreate, ContainerCreateResponse} from "./lib/types/container/create.ts";
 import {ImageList} from "./lib/types/images/image.ts";
+import {ImageCreate} from "./lib/types/images/create.ts";
 
 export interface ImageListOptions {
   // Return all containers. By default, only running containers are shown
@@ -34,17 +35,23 @@ export class Image {
 
   async create(
     name: string,
-    config: ContainerCreate,
-  ): Promise<ContainerCreateResponse> {
+    config: ImageCreate,
+  ): Promise<string> {
     const res = await this.client.post(
-      "/containers/create",
+      "/images/create",
       JSON.stringify(config),
-      [{ name: "name", value: name }],
+      [{ name: "fromImage", value: name },
+        { name: "fromSrc", value: config.fromSrc ?? ""},
+        { name: "repo", value: config.repo ?? ""},
+        { name: "tag", value: config.tag ?? ""},
+        { name: "message", value: config.message ?? ""},
+        { name: "changes", value: ""},
+        { name: "platform", value: config.platform?? "" }]
     );
     if (!res.body || !res.body.length) {
-      return {};
+      return '';
     }
-    return JSON.parse(res.body);
+    return res.body;
   }
 
 

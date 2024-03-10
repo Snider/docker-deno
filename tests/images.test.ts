@@ -19,5 +19,9 @@ Deno.test("Image: list - all:true", async () => {
   const images = await docker.images.list({all: true});
    assert(images.length >= 1);
 });
+Deno.test("Image: Pull Image", async () => {
+  const images = await docker.images.create('ubuntu', {"fromImage": "ubuntu", tag: 'latest'});
+  console.log(images)
+});
 
 
