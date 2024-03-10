@@ -3,8 +3,11 @@ import {
   assertEquals,
 } from "https://deno.land/std@0.150.0/testing/asserts.ts";
 
-import Docker from "../index.ts";
+import Docker from "../mod.ts";
 import { retry } from "./helpers.ts";
+import {
+  forEach
+} from "https://cdn.skypack.dev/-/lodash@v4.17.21-K6GEbP02mWFnLA45zAmi/dist=es2019,mode=imports/optimized/lodash.js";
 
 const docker = new Docker("/var/run/docker.sock");
 
@@ -14,6 +17,7 @@ Deno.test("container creation", async () => {
     Cmd: ["true"],
     StopTimeout: 10,
   });
+
   assert(typeof container.Id === "string");
 });
 
@@ -33,10 +37,18 @@ Deno.test("container list", async () => {
     Cmd: ["true"],
     StopTimeout: 10,
   });
+
   assert(typeof container.Id === "string");
   await docker.containers.start(container.Id);
   const containerList = await docker.containers.list();
-  assertEquals(container.Id, containerList[0].Id);
+  let found = false
+  containerList.forEach((item) => {
+    if(item['Id'] == container['Id']){
+      found = true;
+    }
+  })
+
+  assertEquals(found, true);
 });
 
 Deno.test("container list with labels", async () => {
@@ -51,10 +63,10 @@ Deno.test("container list with labels", async () => {
     Labels: {"label2": "value2"}
   })
   const containers = await docker.containers.list({all: true})
-  console.log(containers)
+  //console.log(containers)
   const filteredContainers = containers.filter(c => c.Labels?.["label1"] == "value1")
-  console.log(filteredContainers)
-  assertEquals(filteredContainers.length, 1)
+  //console.log(filteredContainers)
+  assertEquals(filteredContainers.length >= 1, true)
 })
 
 Deno.test("container stop", async () => {

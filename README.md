@@ -5,7 +5,7 @@ A fully typed, async-first docker client library for [Deno](https://deno.land).
 ## Installation
 
 ```ts
-import Docker from "https://deno.land/x/denocker/index.ts"
+import Docker from "https://deno.land/x/denocker/mod.ts"
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ import Docker from "https://deno.land/x/denocker/index.ts"
 ### Simple example
 
 ```ts
-import Docker from "https://deno.land/x/denocker/index.ts"
+import Docker from "https://deno.land/x/denocker/mod.ts"
 
 const docker = new Docker("/var/run/docker.sock");
 const container = await docker.containers.create("my_container", {
