@@ -60,6 +60,9 @@ await docker.containers.rm(container.Id);
 ```typescript
 // List images 
 await docker.images.list(ImageListOptions)
+
+// Create Image
+await docker.images.create('ubuntu', {"fromImage": "ubuntu", tag: 'latest'})
 ```
 ## API reference
 
