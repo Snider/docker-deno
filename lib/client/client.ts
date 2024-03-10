@@ -1,22 +1,36 @@
-import * as base64 from "https://deno.land/x/base64/mod.ts";
-import { HttpClient, HttpQuery, HttpRequest } from "./httpClient.ts";
+import * as base64 from "https://deno.land/x/base64@v0.2.1/mod.ts";
+import { HttpClient, HttpQuery, HttpRequest, HttpResponse } from "./httpClient.ts";
 import { RegistryAuth } from "./auth.ts";
 
 export class DockerClient {
-  socketAddress: string;
+  options: Deno.ConnectOptions|Deno.UnixConnectOptions;
   authConfig: RegistryAuth | null;
   client: () => Promise<HttpClient>;
 
-  constructor(socketAddress: string, authConfig: RegistryAuth | null = null) {
-    this.socketAddress = socketAddress;
+  constructor(options: string|Deno.ConnectOptions, authConfig: RegistryAuth | null = null) {
+    if(typeof options == "string"){
+      this.options = {
+        transport: "unix",
+        path: options
+      }
+    } else {
+      this.options = options;
+    }
     this.authConfig = authConfig;
     this.client = this.init;
   }
 
   async init(): Promise<HttpClient> {
-    const conn = await Deno.connect(
-      <any> { transport: "unix", path: this.socketAddress },
-    );
+    let conn: Deno.Conn;
+    if ("path" in this.options) {
+      conn = await Deno.connect(
+        this.options as Deno.UnixConnectOptions
+      );
+    } else {
+      conn = await Deno.connect(
+        this.options as Deno.ConnectOptions
+      )
+    }
     return new HttpClient(conn);
   }
 
@@ -25,7 +39,7 @@ export class DockerClient {
     path: string,
     body: string,
     query: HttpQuery[],
-  ) {
+  ): Promise<HttpResponse> {
     const client = await this.client();
     const enc = new TextEncoder();
     const headers: {[key: string]: string} = {
@@ -45,15 +59,15 @@ export class DockerClient {
     return client.sendRequest(request);
   }
 
-  async get(path: string, query: HttpQuery[] = []) {
+  get(path: string, query: HttpQuery[] = []): Promise<HttpResponse> {
     return this.makeRequest("GET", path, "", query);
   }
 
-  async post(path: string, body: string, query: HttpQuery[] = []) {
+  post(path: string, body: string, query: HttpQuery[] = []): Promise<HttpResponse> {
     return this.makeRequest("POST", path, body, query);
   }
 
-  async delete(path: string, body: string, query: HttpQuery[] = []) {
+  delete(path: string, body: string, query: HttpQuery[] = []): Promise<HttpResponse> {
     return this.makeRequest("DELETE", path, body, query);
   }
 }
