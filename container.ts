@@ -1,11 +1,9 @@
-import {
-  ListContainerResponse,
-  ContainerCreate,
-  ContainerCreateResponse, InspectResponse,
-} from "./lib/types/container/mod.ts";
 import { DockerClient } from "./lib/client/client.ts";
+import { ListContainerResponse } from "./lib/types/container/list.ts";
+import {ContainerCreate, ContainerCreateResponse} from "./lib/types/container/create.ts";
+import {InspectResponse} from "./lib/types/container/inspect.ts";
 
-interface ListOptions {
+export interface ListOptions {
   // Return all containers. By default, only running containers are shown
   all?: boolean;
   // Return this number of most recently created containers, including non-running ones.

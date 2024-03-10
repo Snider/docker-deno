@@ -5,7 +5,7 @@ import {
   HealthStatus, HealthConfig
 } from "./container.ts";
 
-interface State {
+export interface State {
   Status?: string;
   Running?: boolean;
   Paused?: boolean;
@@ -20,7 +20,7 @@ interface State {
   Health?: HealthStatus;
 }
 
-interface ContainerConfig {
+export interface ContainerConfig {
   HostName?: string;
   Domainname?: string;
   User?: string;

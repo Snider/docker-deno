@@ -55,6 +55,12 @@ await docker.container.wait(container.Id);
 await docker.containers.rm(container.Id);
 ```
 
+### Images
+
+```typescript
+// List images 
+await docker.images.list(ImageListOptions)
+```
 ## API reference
 
 ### Containers
@@ -67,3 +73,7 @@ await docker.containers.rm(container.Id);
 * `containers.restart` - [Docker API](https://docs.docker.com/engine/api/v1.40/#operation/ContainerRestart)
 * `containers.wait` - [Docker API](https://docs.docker.com/engine/api/v1.40/#operation/ContainerWait)
 * `containers.rm` - [Docker API](https://docs.docker.com/engine/api/v1.40/#operation/ContainerDelete)
+
+### Image
+
+* `image.list` - [Docker API](https://docs.docker.com/engine/api/v1.40/#tag/Image/operation/ImageList)

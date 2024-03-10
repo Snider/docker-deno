@@ -135,8 +135,19 @@ interface HealthStatus {
 export type {
   Port,
   HostConfig,
+  PortBinding,
   NetworkSettings,
+  DriverConfig,
+  BindOptions,
+  TmpfsOptions,
+  VolumeOptions,
   Mount,
   HealthConfig,
-  HealthStatus
+  HealthStatus,
+  EndpointSettings,
+  EndpointIPAMConfig,
+  Network,
+  MountConsistency,
+  MountType,
+  PortType
 };
