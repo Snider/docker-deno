@@ -1,11 +1,21 @@
-# Denocker
+# docker_deno
 
 A fully typed, async-first docker client library for [Deno](https://deno.land).
 
 ## Installation
 
 ```ts
-import Docker from "https://deno.land/x/denocker/mod.ts"
+import Docker from "https://deno.land/x/docker_deno/mod.ts"
+```
+
+Add this to your deno.json file, to upgrade version just edit the version here and use the above url in your code.
+
+```json
+{
+  "imports": {
+    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.0/"
+  }
+}
 ```
 
 ## Usage
@@ -13,7 +23,7 @@ import Docker from "https://deno.land/x/denocker/mod.ts"
 ### Simple example
 
 ```ts
-import Docker from "https://deno.land/x/denocker/mod.ts"
+import Docker from "https://deno.land/x/docker_deno/mod.ts"
 
 const docker = new Docker("/var/run/docker.sock");
 const container = await docker.containers.create("my_container", {
