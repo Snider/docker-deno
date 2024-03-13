@@ -13,7 +13,7 @@ Add this to your deno.json file, to upgrade version just edit the version here a
 ```json
 {
   "imports": {
-    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.0/"
+    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.1/"
   }
 }
 ```
