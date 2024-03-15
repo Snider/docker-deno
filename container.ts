@@ -127,4 +127,14 @@ export class Container {
     }
     return JSON.parse(res.body)
   }
+
+  async stats(id: string) {
+    const res = await this.client.get(`/containers/${id}/stats`, [
+        {name: "stream", value: "false"},
+    ]);
+    if (!res.body) {
+      return {};
+    }
+    return JSON.parse(res.body)
+  }
 }

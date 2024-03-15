@@ -49,6 +49,7 @@ Deno.test("container list", async () => {
   })
 
   assertEquals(found, true);
+  await docker.containers.rm(container.Id);
 });
 
 Deno.test("container list with labels", async () => {
@@ -88,6 +89,7 @@ Deno.test("container stop", async () => {
     10,
     2000
   )
+  await docker.containers.rm(id);
 });
 
 Deno.test("container wait", async () => {
@@ -99,6 +101,7 @@ Deno.test("container wait", async () => {
   assert(typeof id === "string");
   await docker.containers.start(id);
   await docker.containers.wait(id);
+  await docker.containers.rm(id);
 });
 
 Deno.test("container kill", async () => {
@@ -112,6 +115,7 @@ Deno.test("container kill", async () => {
   const containerList = await docker.containers.list();
   assertEquals(id, containerList[0].Id);
   await docker.containers.kill(id);
+  await docker.containers.rm(id);
 });
 
 Deno.test("container rm", async () => {
@@ -131,6 +135,7 @@ Deno.test("container rm", async () => {
     all: true
   });
   assertEquals(containerList.length, 0);
+  await docker.containers.rm(id);
 });
 
 Deno.test("container inspect", async () => {
@@ -144,4 +149,16 @@ Deno.test("container inspect", async () => {
   assert(containerData.Path === "true")
   assert(containerData.State?.Status === "created")
   assert(typeof containerData.GraphDriver?.Name === "string")
+  await docker.containers.rm(id);
+})
+Deno.test("container Stats", async () => {
+  const { Id: id } = await docker.containers.create(crypto.randomUUID(), {
+    Image: "ubuntu",
+    Cmd: ["true"],
+    StopTimeout: 10,
+  });
+  assert(typeof id === "string");
+  const containerData = await docker.containers.stats(id);
+  assert(typeof containerData.name === "string")
+  await docker.containers.rm(id);
 })

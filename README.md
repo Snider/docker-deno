@@ -63,6 +63,9 @@ await docker.container.wait(container.Id);
 
 // Delete a container
 await docker.containers.rm(container.Id);
+
+// Get Container stats: https://docs.docker.com/engine/api/v1.40/#tag/Container/operation/ContainerStats
+await docker.containers.stats(container.Id)
 ```
 
 ### Images
