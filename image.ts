@@ -53,6 +53,28 @@ export class Image {
     }
     return res.body;
   }
+  async pull(
+    name: string,
+    config: ImageCreate = {fromImage: '', tag: '', platform: '', repo: '', message: '', fromSrc: ''},
+  ): Promise<string> {
+
+
+    const res = await this.client.post(
+      "/images/create",
+      JSON.stringify(config),
+      [{ name: "fromImage", value: name },
+        { name: "fromSrc", value: config.fromSrc ?? ""},
+        { name: "repo", value: config.repo ?? ""},
+        { name: "tag", value: config.tag ?? ""},
+        { name: "message", value: config.message ?? ""},
+        { name: "changes", value: ""},
+        { name: "platform", value: config.platform?? "" }]
+    );
+    if (!res.body || !res.body.length) {
+      return '';
+    }
+    return res.body;
+  }
 
 
 

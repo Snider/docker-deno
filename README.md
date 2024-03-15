@@ -13,7 +13,7 @@ Add this to your deno.json file, to upgrade version just edit the version here a
 ```json
 {
   "imports": {
-    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.1/"
+    "https://deno.land/x/docker_deno/": "https://deno.land/x/docker_deno@v0.3.2/"
   }
 }
 ```
@@ -71,8 +71,11 @@ await docker.containers.rm(container.Id);
 // List images 
 await docker.images.list(ImageListOptions)
 
-// Create Image
-await docker.images.create('ubuntu', {"fromImage": "ubuntu", tag: 'latest'})
+// Pull Image
+await docker.images.pull('lthn/chain:latest');
+
+// Create Image including pulling the image https://docs.docker.com/engine/api/v1.40/#tag/Image/operation/ImageCreate
+await docker.images.create('ubuntu', {fromImage: "ubuntu", fromSrc:'', tag: 'latest', repo: '', platform: "linux/amd64", message: "test"})
 ```
 ## API reference
 

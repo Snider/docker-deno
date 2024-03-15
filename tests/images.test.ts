@@ -19,9 +19,14 @@ Deno.test("Image: list - all:true", async () => {
   const images = await docker.images.list({all: true});
    assert(images.length >= 1);
 });
-Deno.test("Image: Pull Image", async () => {
+Deno.test("Image: Create Pull Image", async () => {
   const images = await docker.images.create('lthn/chain', {"fromImage": "lthn/chain", tag: 'latest'});
 
+  assert(images.length >= 1);
+});
+
+Deno.test("Image: Pull Image", async () => {
+    const images = await docker.images.pull('lthn/chain:latest' );
   assert(images.length >= 1);
 });
 
